@@ -6,7 +6,7 @@
     Implementa un arxiu de entrada, log i un arxiu de sortida tot senza menu
 """
 import random
-
+import logging
 FILE_NAME = "paraules.txt"
 cEspeciales = [".", ",", "?", ":", ";", "!", "'", "¡", "¿"]
 Texto_Ordenado = []
@@ -39,10 +39,29 @@ def juntar():
     return frasedes
 
 def resultado():
-    print("Texto desordenado:")
-    print(frase_Desordenado)
+    with open("paraules_boges.txt", "w") as f:
+        f.write(frase_Desordenado)
 
 texto_leido = leerParaules(FILE_NAME)
 palabras = separar(texto_leido)
 frase_Desordenado = juntar()
 resultado()
+
+logFile = 'boges.log'
+
+logFormat='%(asctime)s %(levelname)s %(message)s'
+
+logLevel= logging.DEBUG
+
+logMode = 'a'
+
+
+logging.basicConfig(level=logLevel,format=logFormat,filename=logFile,filemode=logMode)
+
+
+logging.debug("Mensaje de debug")
+
+logging.info("Mensaje informativo")
+
+logging.error("Error no encuentra el archivo")
+
