@@ -3,7 +3,7 @@
     30/04/2024
     ASIXc 1B  M03 UF3 A1
     ParaulesBoges Pt.3
-    Implementa un arxiu de entrada, log i un arxiu de sortida tot senza menu
+    Implementa un arxiu de entrada, log i un arxiu de sortida tot sense menu
 """
 import random
 import logging
