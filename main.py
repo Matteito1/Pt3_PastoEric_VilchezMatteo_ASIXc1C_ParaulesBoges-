@@ -5,20 +5,19 @@
     ParaulesBoges Pt.3
     Implementa un arxiu de entrada, log i un arxiu de sortida tot sense menu
 """
+
 import random
 import logging
-FILE_NAME = "paraules.txt"
+import os
+
 cEspeciales = [".", ",", "?", ":", ";", "!", "'", "¡", "¿"]
-Texto_Ordenado = []
-palabras = []
-frase_Desordenado = []
 
 def leerParaules(FILE_NAME):
     with open(FILE_NAME, 'r') as f:
-        f = f.read()
-        return f
+        return f.read()
 
 def separar(leerParaules):
+    palabras = []
     for palabrades in leerParaules.split():
         if len(palabrades) >= 3:
             if palabrades[-1] in cEspeciales:
@@ -34,34 +33,34 @@ def separar(leerParaules):
         palabras.append(separado)
     return palabras
 
-def juntar():
-    frasedes = ' '.join(palabras)
-    return frasedes
+def juntar(palabras):
+    return ' '.join(palabras)
 
-def resultado():
-    with open("paraules_boges.txt", "w") as f:
-        f.write(frase_Desordenado)
+def resultado(FILE_NAME, frase_Desordenado):
+    output_folder = "sortida"
+    output_file = os.path.join(output_folder, os.path.basename(FILE_NAME).replace(".txt", "_boges.txt"))
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)  # Crear la carpeta de salida si no existe
+    with open(output_file, "w") as f:  # Abrir el archivo en modo escritura
+        f.write(frase_Desordenado + '\n')
 
-texto_leido = leerParaules(FILE_NAME)
-palabras = separar(texto_leido)
-frase_Desordenado = juntar()
-resultado()
+try:
+    logFile = 'boges.log'
+    logFormat = '%(asctime)s %(levelname)s %(message)s'
+    logLevel = logging.DEBUG
+    logMode = 'a'
+    logging.basicConfig(level=logLevel, format=logFormat, filename=logFile, filemode=logMode)
 
-logFile = 'boges.log'
+    directory = "./entrada"  # Directorio donde se encuentran los archivos .txt
+    for filename in os.listdir(directory):
+        if filename.endswith(".txt"):
+            FILE_PATH = os.path.join(directory, filename)
+            texto_leido = leerParaules(FILE_PATH)
+            palabras = separar(texto_leido)
+            frase_Desordenado = juntar(palabras)
+            resultado(FILE_PATH, frase_Desordenado)
 
-logFormat='%(asctime)s %(levelname)s %(message)s'
+    logging.debug("Procesamiento completado")
 
-logLevel= logging.DEBUG
-
-logMode = 'a'
-
-
-logging.basicConfig(level=logLevel,format=logFormat,filename=logFile,filemode=logMode)
-
-
-logging.debug("Mensaje de debug")
-
-logging.info("Mensaje informativo")
-
-logging.error("Error no encuentra el archivo")
-
+except Exception as e:
+    logging.error("Error general: %s", str(e))
