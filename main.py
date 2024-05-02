@@ -10,7 +10,7 @@ import random
 import logging
 import os
 
-cEspeciales = [".", ",", "?", ":", ";", "!", "'", "¡", "¿"]
+cEspeciales = [".", ",", "?", ":", ";", "!", "'", "¡", "¿","-"]
 
 def leerParaules(FILE_NAME):
     with open(FILE_NAME, 'r') as f:
